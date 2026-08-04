@@ -1,0 +1,281 @@
+% -*- TeX-engine: luatex; -*-
+\documentclass{article}
+\usepackage{ttn}
+\usepackage{booktabs}
+\usepackage{siunitx}
+% \usepackage{mathtools}
+\usepackage{colonequals} % because unicode-math has broken "::=" somehow
+\usepackage{hyperref}
+%
+% \usepackage[raggedrightboxes]{ragged2e}
+\usepackage[Ragged, size=footnote, shape=up, alerton]{sidenotesplus}
+\usepackage{subcaption}
+\DeclareCaptionStyle{sidecaption}{font=footnotesize, justification=raggedright}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+%
+%% \defn takes an optional star and an optional argument.
+%% If the optional argument is present, it is used for the marginal note; if the argument is missing, the default is the mandatory argument. if the command is starred, no marginal note is made. 
+\NewDocumentCommand\defn{sO{#3}m}{\textit{#3}\IfBooleanF{#1}{\sidenote*{\textcolor{MidnightBlue}{#2}}}}
+%\newcommand{\defn}[2][#2]{\textit{#2}\sidenote*{#1}}
+\newcommand{\isdef}{\stackrel{\text{def}}{=}}
+\newcommand{\set}[1]{\mathbf{#1}}
+\newcommand{\R}{\set{R}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\vv}[1]{\symbf{#1}}
+%% 
+\title{Automatic Differentiation}
+\author{James Geddes}
+\date{\today}
+%%
+\begin{document}%\maketitle
+\maketitle
+
+\section{The gradient}
+\sidenote*{\emph{Notation:} In this section, a boldface symbol will indicate an
+element of a vector space. For example, $\vv{v}\in\mathcal{V}$ indicates that
+$\vv{v}$ is an element of the vector space~$\mathcal{V}$.  Note that this
+notation does not distinguish between different vector spaces even
+though an element of one vector space is not the same thing as an
+element of a different vector space.}
+\sidenote*{A real vector space is a set that comes with a
+  notion of ``addition'' and ``multiplication by real numbers.''  A
+  \emph{vector} is an element of a vector space.  Sometimes people use
+  the word ``vector'' to mean ``a tuple of real numbers'' but that is
+  not correct.}\sidenote*{More carefully, a \emph{real vector space}
+  is a set, $\V$, together with two operations:
+  ${+}:\V \times \V \to \V$ (“addition”) and
+  ${\cdot}:\R \times \V \to \V$ (“multiplication by a scalar”), and a
+  distinguished element $ \vv{0}\in \V$, all of which satisfy the
+  following rules:
+\begin{enumerate}
+\item
+  For every $\vv{u}, \vv{v}, \vv{w} \in \V$,
+  \begin{equation*}
+    \begin{gathered}
+      \vv{v} + \vv{w} = \vv{w} + \vv{v}, \\
+      (\vv{u} + \vv{v}) + \vv{w} = \vv{u} + (\vv{v} + \vv{w}), \\
+      \vv{0} + \vv{v} = \vv{v} + \vv{0} = \vv{v};
+      \end{gathered}
+  \end{equation*}
+\item For every $\vv{v} \in \V$ there must exist an element $-\vv{v}$ such that
+  \begin{equation*}
+    \vv{v} + (-\vv{v}) = \vv{0}; 
+  \end{equation*}
+\item For every $\alpha, \beta \in \R$ and $\vv{v}, \vv{w} \in \V$,
+  \begin{equation*}
+    \begin{gathered}
+      1 \cdot \vv{v} = \vv{v} \\
+      \alpha \cdot (\beta \cdot \vv{v}) = (\alpha \beta) \cdot \vv{v}, \\
+      (\alpha + \beta) \cdot \vv{v} = \alpha \cdot \vv{v} + \beta \cdot \vv{v}, \\
+      \alpha \cdot (\vv{v} + \vv{w}) = \alpha \cdot \vv{v} + \alpha \cdot \vv{w}.
+    \end{gathered}
+  \end{equation*}
+\end{enumerate}
+}
+Suppose that $f:\set{R}\to\set{R}$ is a real-valued function on the
+reals so that $f(x)$ is the value of $f$ at~$x$. The usual derivative
+of $f$ at $x$ is:
+\begin{equation*}
+  \frac{df}{dx} = \lim_{\delta\to0}\frac{f(x + \delta)-f(x)}{\delta},
+\end{equation*}
+and I am sure you are aware of the derivatives of elementary functions
+as well as properties of the derivative such as the chain rule.
+
+Here is one simple property. Suppose the Taylor expansion of $f$ in
+the vicinity of $x=x_0$ is
+\begin{equation}\label{eq:deriv}
+  f(x) = a + b (x-x_0) + \frac{1}{2}c(x-x_0)^2 + \dotsb. 
+\end{equation}
+Then the derivative of $f$ at $x_0$ is just~$b$, the coefficient of
+the linear term in the expansion.
+
+Now fix, once and for all, two finite-dimensional, real vector spaces,
+$\mathcal{V}$ and $\mathcal{W}$, and let
+$f\colon \mathcal{V}\to\mathcal{W}$ be a smooth map from $\mathcal{V}$
+to~$\mathcal{W}$.\sidenote{By ``smooth'' we mean that we shall assume that we
+  can take derivatives whenever we like.}  Can we generalise the
+notion of a derivative to this map?
+
+\emph{Example:} Suppose we simply things slightly by choosing
+$\V=\set{R}$. Just for this example, I will write the map in
+boldface. Thus, the map $\vv{f}\colon t\mapsto\vv{f}(t)$ describes a path in
+$\W$ parameterised by a number, $t\in \R$.  One might think of
+$\vv{f}(t)$ as ``a position in $\W$ at time~$t$.''  The derivative of
+this map is given by the same formula as in eq.~\eqref{eq:deriv}; that
+is:
+\begin{equation*}
+  \frac{d\vv{f}}{dt} = \lim_{\delta\to0}\frac{\vv{f}(t + \delta)-\vv{f}(x)}{\delta}.
+\end{equation*}
+Notice that because $\mathcal{W}$ is a vector space, the expression on the
+right-hand side is well-defined. That is to say, it is permissible to
+write $\vv{f}(t + \delta)-\vv{f}(x)$ because one is allowed to subtract
+two elements of~$\W$.  Likewise the division by $\delta$ is also an
+operation available in~$\W$. 
+
+Sometimes one writes $\dot{\vv{f}}$ (with a little dot) for the
+derivative of~$\vv{f}$.\sidenote{The dot notation is normally used
+  when the parameter is thought of as ``time.'' An alternative
+  notation for the derivative is~$\vv{f}$.} It follows directly from
+the definition that $\dot{\vv{f}}(t)$ is \emph{also} a vector (in
+$\W$) for each value of~$t$. Since the vector ``lives in'' $\W$, we
+can also imagine that, to each point on the path traced out by
+$\vv{f}$ in $\W$, we assign the vector~$\dot{\vv{f}}(t)$ (see
+figure~\ref{fig:velocity}).  If $\vv{f}(t)$ is a ``position at time
+$t$'', then $\dot{\vv{f}}(t)$ might be thought of as the velocity at
+time~$t$. 
+\begin{marginfigure}
+  \margincaption{An example path, $f(t)$, and its derivative
+    in~$\W$.\label{fig:velocity}} \input{deriv-of-path.tex}
+\end{marginfigure}
+
+\emph{Example:} Suppose instead that $\V$ is an aribtrary vector space
+but $\W = \set{R}$.  Now $f$ is a real-valued function on~$\V$; that
+is to say, $f(\vv{x})$ is a real number for each $\vv{x}\in\V$.  (In a
+sense, this is the opposite of the previous example.)  On the face of
+it, one might imagine that we can directly adapt eq.~\eqref{eq:deriv}
+to this circumstance as well.  After all, there should be no trouble
+in computing, say, the subtraction on the right-hand side of
+eq.~\eqref{eq:deriv} since both terms are simply numbers.
+
+However, if one attempts to write down the actual formula, one arrives
+at something like the following:
+\begin{equation*}
+  \frac{df}{d\vv{x}} = \lim_{\vv{\delta}\to0}\frac{f(\vv{x} + \vv{\delta})-f(\vv{x})}{\vv{\delta}}.
+\end{equation*}
+One problem is that $\vv{\delta}$, the ``small change in $\vv{x}$,'' is now itself a
+vector: the derivative of $f$ depends on which direction one is taking
+the derivative in. A larger problem is that, on the right-hand side,
+we are attempting to divide by~$\vv{\delta}$ and that operation is
+certainly not well-defined.
+
+
+
+It is a little less clear what the derivative of this map is.
+However, it is straightforward to define the derivative of $\mu$ in a
+particular direction by the following construction.  Let
+$\xi\in\mathcal{V}$ be any element of $\mathcal{V}$.  The \emph{directional derivative} of
+$\mu$ along $\xi$ at $p$, written $\nabla_\xi\mu$, is:
+\begin{equation*}
+  \label{eq:dirderiv}
+  \nabla_\xi\mu\bigm|_p = \lim_{\delta\to0} \frac{\mu(p + \delta\xi)-\mu(p)}{\delta}.  
+\end{equation*}
+
+On the right-hand side, the expression $p + \delta\xi$ is well-defined since
+$p$ and $\xi$ are vectors and $\delta$ is a real number. 
+
+The directional derivative at $p$ is a number, and that number depends
+on the direction,~$\xi$.  In fact, it is not hard to show that the
+dependence on $\xi$ is linear.\sidenote{To show this, start by Taylor
+  expanding $\mu$ about~$p$.}  In other words, there is some dual
+vector, $\tilde{\zeta}$, called the \emph{gradient of $\mu$}, such that
+$\nabla_\xi\mu = \tilde{\zeta}(\xi)$ for any~$\xi$.  Instead of
+$\tilde{\zeta}$ we normally write just $\nabla\mu$.
+
+Thus the gradient of a real-valued map on $\mathcal{V}$ is a \emph{dual} vector
+at each point in~$\mathcal{V}$. 
+
+
+
+
+
+
+\section{Machine learning models as functions}
+
+One way I understand many machine learning models, including deep
+learning models, is that they are \emph{functions}.  The input is some
+``state of the world,'' an element of the set, $\mathcal{X}$ of all possible
+states, and the output is a ``prediction,'' an element of the set,
+$\mathcal{Y}$, of all possible predictions.  \emph{Example:} An image
+classification model takes, as input, an image, and outputs a
+probability distribution over image labels.  \emph{Example:} An LLM
+takes, as input, a sequence of tokens, and outputs a probability
+distribution over tokens.
+
+A function is a map from one space, $\mathcal{X}$, the domain, to another,
+$\mathcal{Y}$, the codomain.  What kind of spaces are the domains and codomains
+of machine learning models?  Consider a black-and-white image of size
+$w\times h$ pixels, in which each pixel has an intensity between $0$
+and~$1$.  Write $\set{I}$ for the unit interval, $\set{I}=[0,1]$.  An
+image is a choice of an element of $\set{I}$ for each pixel, of which
+there are $w\times h$; thus the domain
+is~$\mathcal{X}=\set{I}^{w\times h}$.  On the output side, suppose there are
+$l$ possible labels that the model might predict.  A probability
+distribution over labels is a number between $0$ and $1$ for each
+label, such that the sum of all the numbers is~$1$.  Thus the codomain
+is the set, $\mathcal{Y}= \Delta^{l-1}$, the unit
+$(l-1)$-simplex.\sidenote{See, e.g.,
+  \url{https://en.wikipedia.org/wiki/Simplex}.}
+
+Notice that neither $\set{I}^{w\times h}$ nor $\Delta^{l-1}$ is a vector
+space.\sidenote{Neither is a vector space because there is no natural
+  notion of addition or multiplication by a number. What would a pixel
+  intensity of $2$ represent? Or multiplication by~$-1$?}
+Nonetheless, it is a polite fiction to suppose that all machine
+learning maps are from one real vector space to another.  One way this
+is done is by embedding the actual domain or codomain in $\set{R}^n$,
+for some~$n$.  For example, since $I$ is naturally a subset of
+$\set{R}$, we can take $\set{I}^{w\times h}$ to be a subspace of
+$\set{R}^{w\times h}$ and $\set{I}^l$ to be a subspace of~$\set{R}^l$.  One
+also feels free to avail oneself of the vector space structure in
+$\set{R}$ even though there was no such structure in~$\set{I}$.
+
+One must take care that the final output of the model lies within the
+true codomain.  For example, classification models, like the image
+classifier, typically have as their penultimate output an element of
+$y\in\set{R}^n$ whose individual components $y_i$ may take on arbitrary
+real values.  In order to construct an element of $\Delta^{l-1}$, it is
+usual to exponentiate each component (resulting in a positive number)
+and then normalise the sum of all components to be~$1$.  That is, one
+computes, for the $i$th component $y_i$, the value
+$(\exp {y_i})/ \sum_i \exp {y_i}$.\sidenote{This transformation is
+  called the ``softmax'' and the $y_i$s are called the ``unnormalised
+  log probabilities.''}
+
+Thus, a machine learning model is taken to be a function from
+$\set{R}^M$ (for some $M$) to $\set{R}^N$ (for some $N$).
+
+There is one more space of importance.  A particular machine learning
+model is of course really a parameterised family of models and the set
+of parameters, $\\Pi$,,is itself usually taken to be some real vector
+space, say~$\Pi=\set{R}^P$ (for some natural number $P$).  Fixing a
+particular $p\in\set{R}^P$ one obtains a particular instance of a model.
+
+Thus, a machine learning model is a function,
+$\mu\colon \Pi\times\mathcal{X}\to\mathcal{Y}$, or equivalently,
+$\mu\colon \set{R}^P\times\set{R}^M\to \set{R}^N$.  For a given ``state of the
+world'' $x\in\set{R}^M$, and parameters $\theta\in \set{R}^P$, one obtains a
+``prediction,'' $y\in\set{R}^N$ by $y = \mu(\theta; x)$.
+
+\section{Gradient descent}
+
+The central problem in machine learning is this: Given
+\begin{enumerate}
+\item a parameterised
+family of functions, $\mu : \Pi\times\mathcal{X}\to\mathcal{Y}$; and
+\item a set of pairs, 
+$(\tilde{x}_1, \tilde{y}_1)$, $(\tilde{x}_2, \tilde{y}_2)$, \dots,
+  $(\tilde{x}_n, \tilde{y}_n)$, where $\tilde{x}_i\in\mathcal{X}$ and
+  $\tilde{y}_i\in\mathcal{Y}$,
+\end{enumerate}
+choose a specific parameter $\theta\in\Pi$---that is, choose a particular
+$\mu$---so that the $\mu(\theta; \tilde{x}_i)$ are ``close to''
+the~$\tilde{y}_i$.  There are different versions of ``close to,'' but
+one usually writes down a real-valued function
+$L\colon \mathcal{Y}^n\times\set{\mathcal{Y}}^n\times\Pi\to\set{R}$ and attempts to minimise
+\begin{equation*}
+  \label{eq:loss}
+  \mathcal{L}(\theta) = L\bigl(\tilde{y}_1,\dotsc,\tilde{y}_n; \mu(\theta,\tilde{x}_1), \dotsc,
+  \mu(\theta,\tilde{x}_n); \theta\bigr),
+\end{equation*}
+with respect to~$\theta$.  (The explicit dependence on $\theta$ allows one to
+specify a preference for some parameters over others.)  The minimum is
+usually found by gradient descent, each step of which requires one to
+evaluate $\Delta_\theta \mathcal{L}$, the gradient of $\mathcal{L}$ with respect to~$\theta$.
+
+
+
+
+
+\end{document}
