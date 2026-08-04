@@ -5,7 +5,6 @@
 \usepackage{siunitx}
 % \usepackage{mathtools}
 \usepackage{colonequals} % because unicode-math has broken "::=" somehow
-\usepackage{hyperref}
 %
 % \usepackage[raggedrightboxes]{ragged2e}
 \usepackage[Ragged, size=footnote, shape=up, alerton]{sidenotesplus}
@@ -13,6 +12,7 @@
 \DeclareCaptionStyle{sidecaption}{font=footnotesize, justification=raggedright}
 \usepackage{graphicx}
 \usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=Blue]{hyperref}
 %
 %% \defn takes an optional star and an optional argument.
 %% If the optional argument is present, it is used for the marginal note; if the argument is missing, the default is the mandatory argument. if the command is starred, no marginal note is made. 
@@ -75,7 +75,7 @@ element of a different vector space.}
 \end{enumerate}
 }
 Suppose that $f:\set{R}\to\set{R}$ is a real-valued function on the
-reals so that $f(x)$ is the value of $f$ at~$x$. The usual derivative
+reals, so that $f(x)$ is the value of $f$ at~$x$. The usual derivative
 of $f$ at $x$ is:
 \begin{equation*}
   \frac{df}{dx} = \lim_{\delta\to0}\frac{f(x + \delta)-f(x)}{\delta},
@@ -99,35 +99,36 @@ to~$\mathcal{W}$.\sidenote{By ``smooth'' we mean that we shall assume that we
 notion of a derivative to this map?
 
 \emph{Example:} Suppose we simply things slightly by choosing
-$\V=\set{R}$. Just for this example, I will write the map in
-boldface. Thus, the map $\vv{f}\colon t\mapsto\vv{f}(t)$ describes a path in
+$\V=\set{R}$. Just for this example, I will write the map, $\vv{f}$, in
+boldface. Thus, $\vv{f}\colon t\mapsto\vv{f}(t)$ describes a path in
 $\W$ parameterised by a number, $t\in \R$.  One might think of
 $\vv{f}(t)$ as ``a position in $\W$ at time~$t$.''  The derivative of
 this map is given by the same formula as in eq.~\eqref{eq:deriv}; that
 is:
 \begin{equation*}
-  \frac{d\vv{f}}{dt} = \lim_{\delta\to0}\frac{\vv{f}(t + \delta)-\vv{f}(x)}{\delta}.
+  \frac{d\vv{f}}{dt} = \lim_{\delta\to0}\frac{\vv{f}(t + \delta)-\vv{f}(t)}{\delta}.
 \end{equation*}
 Notice that because $\mathcal{W}$ is a vector space, the expression on the
 right-hand side is well-defined. That is to say, it is permissible to
-write $\vv{f}(t + \delta)-\vv{f}(x)$ because one is allowed to subtract
-two elements of~$\W$.  Likewise the division by $\delta$ is also an
+write $\vv{f}(t + \delta)-\vv{f}(x)$ because the notion of the
+subtraction of one vector from another is part of the required
+machinery of a vector space.  Likewise, the division by $\delta$ is also an
 operation available in~$\W$. 
 
 Sometimes one writes $\dot{\vv{f}}$ (with a little dot) for the
 derivative of~$\vv{f}$.\sidenote{The dot notation is normally used
   when the parameter is thought of as ``time.'' An alternative
-  notation for the derivative is~$\vv{f}$.} It follows directly from
+  notation for the derivative is~$\vv{f}'$.} It follows directly from
 the definition that $\dot{\vv{f}}(t)$ is \emph{also} a vector (in
-$\W$) for each value of~$t$. Since the vector ``lives in'' $\W$, we
+$\W$) for each value of~$t$. Since $\dot{\vv{f}}$ ``lives in'' $\W$, we
 can also imagine that, to each point on the path traced out by
 $\vv{f}$ in $\W$, we assign the vector~$\dot{\vv{f}}(t)$ (see
 figure~\ref{fig:velocity}).  If $\vv{f}(t)$ is a ``position at time
-$t$'', then $\dot{\vv{f}}(t)$ might be thought of as the velocity at
-time~$t$. 
+$t$'', then $\dot{\vv{f}}(t)$ might be thought of as ``the velocity at
+time~$t$.'' 
 \begin{marginfigure}
-  \margincaption{An example path, $f(t)$, and its derivative
-    in~$\W$.\label{fig:velocity}} \input{deriv-of-path.tex}
+  \margincaption{An example path, $f(t)$ (in blue), and samples of its derivative
+    (shown as red arrows).\label{fig:velocity}} \input{deriv-of-path.tex}
 \end{marginfigure}
 
 \emph{Example:} Suppose instead that $\V$ is an aribtrary vector space
@@ -139,36 +140,94 @@ to this circumstance as well.  After all, there should be no trouble
 in computing, say, the subtraction on the right-hand side of
 eq.~\eqref{eq:deriv} since both terms are simply numbers.
 
-However, if one attempts to write down the actual formula, one arrives
+However, if one attempts actually to write down the formula, one arrives
 at something like the following:
 \begin{equation*}
-  \frac{df}{d\vv{x}} = \lim_{\vv{\delta}\to0}\frac{f(\vv{x} + \vv{\delta})-f(\vv{x})}{\vv{\delta}}.
+  \frac{df}{d\vv{x}} = \lim_{\vv{\delta}\to0}\frac{f(\vv{x} +
+    \vv{\delta})-f(\vv{x})}{\vv{\delta}}. \tag{Not well-formed!}
 \end{equation*}
-One problem is that $\vv{\delta}$, the ``small change in $\vv{x}$,'' is now itself a
-vector: the derivative of $f$ depends on which direction one is taking
-the derivative in. A larger problem is that, on the right-hand side,
-we are attempting to divide by~$\vv{\delta}$ and that operation is
-certainly not well-defined.
+One immediate problem problem with this formula is that, on the
+right-hand side, we are attempting to divide by a vector,
+$\vv{\delta}$, and that operation is certainly not well-defined.  A
+more subtle problem is that, since $\vv{x}$ is a vector, the notion of
+a ``small change in $\vv{x}$'' must also be a vector; that is, the
+derivative of $f$ now depends on the direction in which one is taking
+the derivative.
 
-
-
-It is a little less clear what the derivative of this map is.
-However, it is straightforward to define the derivative of $\mu$ in a
-particular direction by the following construction.  Let
-$\xi\in\mathcal{V}$ be any element of $\mathcal{V}$.  The \emph{directional derivative} of
-$\mu$ along $\xi$ at $p$, written $\nabla_\xi\mu$, is:
+It turns out that, if we are willing, for now, to go along with the
+idea of a ``directional derivative,'' then it is possible to produce a
+well-defined expression for such a thing. Suppose in fact that
+$\vv{\xi}$ is some vector, and let $\lambda>0$ be a number. Now consider the
+expression:
 \begin{equation*}
-  \label{eq:dirderiv}
-  \nabla_\xi\mu\bigm|_p = \lim_{\delta\to0} \frac{\mu(p + \delta\xi)-\mu(p)}{\delta}.  
+  \lim_{\lambda\to0}\frac{f(\vv{x} +
+    \lambda\vv{\xi})-f(\vv{x})}{\lambda}.
 \end{equation*}
+\emph{This} expression is well-defined: on the right, the denominator,
+$\lambda$, is simply a number; and the limit is taken as $\lambda$ approaches
+zero.  We call this limit the ``directional derivative of $\vv{f}$
+along $\vv{\xi}$'' and denote it by $\nabla_{\vv{\xi}}\vv{f}$. An
+equivalent way to formulate the directional derivative is
+\begin{equation}
+  \label{eq:grad}
+  \nabla_{\vv{\xi}}f = \frac{d}{d\lambda} f(\vv{x}+\lambda\vv{\xi}) \quad\text{at $\lambda=0$}.
+\end{equation}
 
-On the right-hand side, the expression $p + \delta\xi$ is well-defined since
-$p$ and $\xi$ are vectors and $\delta$ is a real number. 
+The directional derivative, $\nabla_{\vv{\xi}}\vv{f}$, of $\vv{f}$ at
+$\vv{x}$ is a number, which depends on the direction~$\vv{\xi}\in\V$.
+We'd really like the derivative just to be ``a thing,'' without any
+dependencies (apart from the point $\vv{x}$).  We could, in principle,
+say that it is an element of the set of all maps from vectors to
+numbers.  That is, we could say that the derivative is an element of
+$\set{R}^{\V}$. And this is true, but the space $\set{R}^{\V}$ is
+really rather large.
 
-The directional derivative at $p$ is a number, and that number depends
-on the direction,~$\xi$.  In fact, it is not hard to show that the
-dependence on $\xi$ is linear.\sidenote{To show this, start by Taylor
-  expanding $\mu$ about~$p$.}  In other words, there is some dual
+It turns out, somewhat remarkably, that the dependence of the
+derivative at $\vv{x}$ on the direction $\vv{\xi}$ is not some terribly
+complicated thing: in fact, it is \emph{linear} in~$\vv{\xi}$.  That is,
+the derivative at $\vv{x}$ actually ``lives in'' the space
+$\mathcal{L}(\V,\set{R})$, the space of linear maps from $\V$
+to~$\set{R}$.\sidenote{To show that the directional derivative is
+  linear in the direction, one must show that
+  $\nabla_{\alpha\vv{\xi}+\beta\vv{\zeta}}f = \alpha\nabla_{\vv{\xi}} f+ \beta\nabla_{\vv{\zeta}} f$
+  for any two numbers $\alpha,\beta\in\set{R}$ and vectors
+  $\vv{\xi},\vv{\zeta} \in\V$.
+  %
+  \sidepar
+  To see this, let $s(\lambda)$ and $t(\lambda)$ be any two functions of
+  $\lambda$ and consider the derivative, with respect to $\lambda$, of the
+  function $f(\vv{x}+s(\lambda)\vv{\xi} + t(\lambda)\vv{\zeta})$. By the chain rule, one
+  has:
+\begin{equation*}
+  \frac{d}{d\lambda}f(\vv{x}+s(\lambda)\vv{\xi} + t(\lambda)\vv{\zeta}) = \frac{\partial f}{\partial s} \frac{ds}{d\lambda} +
+  \frac{\partial f}{\partial t} \frac{dt}{d\lambda}.
+\end{equation*}
+Now choose the special case of $s(\lambda)=\alpha\lambda$ and $t(\lambda)=\beta\lambda$, whence
+\begin{equation*}
+  \frac{d}{d\lambda}f(\vv{x}+\lambda(\alpha\vv{\xi} + \beta\vv{\zeta})) = \frac{\partial f}{\partial s} \alpha +
+  \frac{\partial f}{\partial t} \beta.
+\end{equation*}
+Evaluating this at $\lambda=0$ one has, on the left, the directional
+derivative along $\alpha\vv{\xi} + \beta\vv{\zeta}$; and, on the right,
+the required linear combination of the directional derivatives along
+$\vv{\xi}$ and~$\vv{\zeta}$. 
+}
+And this space is much (much) smaller than the full space~$\set{R}^{\V}$.
+
+The space $\mathcal{L}(\V,\set{R})$ is known as the \emph{dual}
+of~$\V$, written $\V^*$.  It is itself a vector space and in fact has
+the same dimension as~$\V$.
+
+In other words, there is some element, 
+
+
+Thus, if one happens to represent an
+element of $\V$ as a tuple of numbers, then one can represent
+an element of $\V^*$ as a tuple of numbers of the very same length.
+They are not the same kind of thing—they are not elements of the
+same vector space—but it is easy to think that they are.  
+
+In other words, there is some dual
 vector, $\tilde{\zeta}$, called the \emph{gradient of $\mu$}, such that
 $\nabla_\xi\mu = \tilde{\zeta}(\xi)$ for any~$\xi$.  Instead of
 $\tilde{\zeta}$ we normally write just $\nabla\mu$.
