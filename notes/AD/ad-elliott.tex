@@ -73,30 +73,35 @@ element of a different vector space.}
     \end{gathered}
   \end{equation*}
 \end{enumerate}
-}
-Suppose that $f:\set{R}\to\set{R}$ is a real-valued function on the
-reals, so that $f(x)$ is the value of $f$ at~$x$. The usual derivative
-of $f$ at $x$ is:
+} Suppose that $f(x)$ is a real-valued function on the reals. The
+usual derivative of $f$ at $x$ is:
 \begin{equation*}
   \frac{df}{dx} = \lim_{\delta\to0}\frac{f(x + \delta)-f(x)}{\delta},
 \end{equation*}
 and I am sure you are aware of the derivatives of elementary functions
-as well as properties of the derivative such as the chain rule.
-
-Here is one simple property. Suppose the Taylor expansion of $f$ in
-the vicinity of $x=x_0$ is
+as well as properties of the derivative such as the chain rule.  Here
+is one simple property. Suppose the Taylor expansion of $f$ in the
+vicinity of $x=x_0$ is
 \begin{equation}\label{eq:deriv}
   f(x) = a + b (x-x_0) + \frac{1}{2}c(x-x_0)^2 + \dotsb. 
 \end{equation}
 Then the derivative of $f$ at $x_0$ is just~$b$, the coefficient of
 the linear term in the expansion.
 
-Now fix, once and for all, two finite-dimensional, real vector spaces,
+The idea of the gradient is to generalise the ordinary derivative.
+Instead of functions from $\R$ to $\R$, we are interested in functions
+from one vector space to another.  Can we generalise the derivative to this
+setting?
+
+Fix, once and for all, two finite-dimensional, real vector spaces,
 $\mathcal{V}$ and $\mathcal{W}$, and let
 $f\colon \mathcal{V}\to\mathcal{W}$ be a smooth map from $\mathcal{V}$
 to~$\mathcal{W}$.\sidenote{By ``smooth'' we mean that we shall assume that we
-  can take derivatives whenever we like.}  Can we generalise the
-notion of a derivative to this map?
+  can take derivatives whenever we like.}  We shall construct the
+\emph{gradient} of $f$, which will be the generalisation of the
+ordinary derivative.
+
+\subsection{Two special case}
 
 \emph{Example:} Suppose we simply things slightly by choosing
 $\V=\set{R}$. Just for this example, I will write the map, $\vv{f}$, in
@@ -126,10 +131,6 @@ $\vv{f}$ in $\W$, we assign the vector~$\dot{\vv{f}}(t)$ (see
 figure~\ref{fig:velocity}).  If $\vv{f}(t)$ is a ``position at time
 $t$'', then $\dot{\vv{f}}(t)$ might be thought of as ``the velocity at
 time~$t$.'' 
-\begin{marginfigure}
-  \margincaption{An example path, $f(t)$ (in blue), and samples of its derivative
-    (shown as red arrows).\label{fig:velocity}} \input{deriv-of-path.tex}
-\end{marginfigure}
 
 \emph{Example:} Suppose instead that $\V$ is an aribtrary vector space
 but $\W = \set{R}$.  Now $f$ is a real-valued function on~$\V$; that
@@ -139,12 +140,15 @@ it, one might imagine that we can directly adapt eq.~\eqref{eq:deriv}
 to this circumstance as well.  After all, there should be no trouble
 in computing, say, the subtraction on the right-hand side of
 eq.~\eqref{eq:deriv} since both terms are simply numbers.
-
+\begin{marginfigure}
+  \margincaption{An example path, $f(t)$ (in blue), and samples of its derivative
+    (shown as red arrows).\label{fig:velocity}} \input{deriv-of-path.tex}
+\end{marginfigure}
 However, if one attempts actually to write down the formula, one arrives
 at something like the following:
 \begin{equation*}
   \frac{df}{d\vv{x}} = \lim_{\vv{\delta}\to0}\frac{f(\vv{x} +
-    \vv{\delta})-f(\vv{x})}{\vv{\delta}}. \tag{Not well-formed!}
+    \vv{\delta})-f(\vv{x})}{\vv{\delta}}  \qquad\text{--- Not well formed!}
 \end{equation*}
 One immediate problem problem with this formula is that, on the
 right-hand side, we are attempting to divide by a vector,
@@ -156,39 +160,35 @@ the derivative.
 
 It turns out that, if we are willing, for now, to go along with the
 idea of a ``directional derivative,'' then it is possible to produce a
-well-defined expression for such a thing. Suppose in fact that
-$\vv{\xi}$ is some vector, and let $\lambda>0$ be a number. Now consider the
+well-defined expression for such a thing. Fix a vector,
+$\vv{\xi}$, and let $\delta>0$ be a number. Now consider the
 expression:
 \begin{equation*}
-  \lim_{\lambda\to0}\frac{f(\vv{x} +
-    \lambda\vv{\xi})-f(\vv{x})}{\lambda}.
+  \lim_{\delta\to0}\frac{f(\vv{x} +
+    \delta\vv{\xi})-f(\vv{x})}{\delta}.
 \end{equation*}
 \emph{This} expression is well-defined: on the right, the denominator,
-$\lambda$, is simply a number; and the limit is taken as $\lambda$ approaches
+$\delta$, is simply a number; and the limit is taken as $\delta$ approaches
 zero.  We call this limit the ``directional derivative of $\vv{f}$
-along $\vv{\xi}$'' and denote it by $\nabla_{\vv{\xi}}\vv{f}$. An
-equivalent way to formulate the directional derivative is
+along $\vv{\xi}$'' and denote it by
+$\partial_{\vv{\xi}}f$.\sidenote{Other notations for the directional
+  derivative are $D_{\vv{\xi}}f$, $\pounds_{\vv{\xi}}f$, and
+  $\nabla_{\vv{\xi}}f$.} An equivalent way to formulate the directional
+derivative is
 \begin{equation}
   \label{eq:grad}
-  \nabla_{\vv{\xi}}f = \frac{d}{d\lambda} f(\vv{x}+\lambda\vv{\xi}) \quad\text{at $\lambda=0$}.
+  \partial_{\vv{\xi}}f = \left.\frac{d}{d\lambda} f(\vv{x}+\lambda\vv{\xi})\right|_{\lambda=0}.
 \end{equation}
 
-The directional derivative, $\nabla_{\vv{\xi}}\vv{f}$, of $\vv{f}$ at
-$\vv{x}$ is a number, which depends on the direction~$\vv{\xi}\in\V$.
-We'd really like the derivative just to be ``a thing,'' without any
-dependencies (apart from the point $\vv{x}$).  We could, in principle,
-say that it is an element of the set of all maps from vectors to
-numbers.  That is, we could say that the derivative is an element of
-$\set{R}^{\V}$. And this is true, but the space $\set{R}^{\V}$ is
-really rather large.
-
-It turns out, somewhat remarkably, that the dependence of the
-derivative at $\vv{x}$ on the direction $\vv{\xi}$ is not some terribly
-complicated thing: in fact, it is \emph{linear}
-in~$\vv{\xi}$.\sidenote{To show that the directional derivative is
-  linear in the direction, one must show that
-  $\nabla_{\alpha\vv{\xi}+\beta\vv{\zeta}}f = \alpha\nabla_{\vv{\xi}} f+ \beta\nabla_{\vv{\zeta}} f$
-  for any two numbers $\alpha,\beta\in\set{R}$ and vectors $\vv{\xi},\vv{\zeta} \in\V$.
+The directional derivative, $\partial_{\vv{\xi}}f$, of $f$ at
+$\vv{x}$, is a number.  You might expect that this number would depend
+in some complicated way on the direction,~$\vv{\xi}$. Remarkably,
+however, the derivative is \emph{linear} in~$\vv{\xi}$.\sidenote{To show
+  that the directional derivative is linear in the direction, one must
+  show that
+  $\partial_{\alpha\vv{\xi}+\beta\vv{\zeta}}f = \alpha\partial_{\vv{\xi}} f+
+  \beta\partial_{\vv{\zeta}} f$ for any two numbers
+  $\alpha,\beta\in\set{R}$ and vectors $\vv{\xi},\vv{\zeta} \in\V$.
   %
   \sidepar
   To see this, let $s(\lambda)$ and $t(\lambda)$ be any two functions of
@@ -205,42 +205,70 @@ Now choose the special case of $s(\lambda)=\alpha\lambda$ and $t(\lambda)=\beta\
   \frac{\partial f}{\partial t} \beta.
 \end{equation*}
 Evaluating this at $\lambda=0$ one has, on the left, the directional
-derivative along $\alpha\vv{\xi} + \beta\vv{\zeta}$; and, on the right,
-the required linear combination of the directional derivatives along
-$\vv{\xi}$ and~$\vv{\zeta}$. 
+derivative along $\alpha\vv{\xi} + \beta\vv{\zeta}$; and, on the right, the required
+linear combination of the directional derivatives along $\vv{\xi}$
+and~$\vv{\zeta}$.
 }
-That is, the derivative at $\vv{x}$ actually ``lives in'' the space
-$\mathcal{L}(\V,\set{R})$, the space of linear maps from $\V$
-to~$\set{R}$. And this space is much (much) smaller than the full
-space~$\set{R}^{\V}$.
+That is, there is some linear map,
+$\vv{G}\colon\V\to\R$, such that, for \emph{any} vector $\vv{\xi}$, we have
+$\partial_{\vv{\xi}}f = \vv{G}(\vv{\xi})$. This $\vv{G}$ is called the ``gradient of
+$f$ at $\vv{x}$.''  For each point, $\vv{x}\in\V$, there is a
+corresponding linear map, $\vv{G}(\vv{x})$, and this function \emph{is} the
+gradient of $f$, written~$\nabla f$.
 
-The space $\mathcal{L}(\V,\set{R})$ is known as the \emph{dual}
-of~$\V$, written $\V^*$.  It is itself a vector space and in fact has
-the same dimension as~$\V$.  In other words, there is some dual
-vector, $\vv{G}\in\V^*$, such that
-$\nabla_{\vv{\xi}}f = \vv{G}(\vv{\xi})$. (I am omitting the dependency on
-$\vv{x}$.) This $\vv{G}$ is called the \emph{gradient} of~$f$; it is
-normally writen as simply $\nabla f$.
+To say this another way: given a function $f(\vv{x})$ there is, at
+each point $\vv{x}\in\V$, a linear map, $\nabla f$, such that for any vector
+$\vv{\xi}$,
+\begin{equation*}
+  \partial_{\vv{\xi}} f = (\nabla f)(\xi).
+\end{equation*}
 
-Note that the gradient of a function, $f$, is not an element of $\V$,
-it is an element of $\V^*$.  If one happens to represent an element of
-$\V$ as a tuple of numbers, then one might represent an element of
-$\V^*$ as a tuple of numbers of the very same length: but they are not
-the same thing.\sidenote{People often visually distinguish the two
+It is worth stepping back briefly and considering the common story
+about the method of gradient descent.  To find the minimum of a
+function by the method of gradient descent, one computes the gradient
+of the function, which is supposed to ``point uphill,'' and takes a
+``small step'' in the opposite direction.  That is, the gradient is
+thought of as a vector in~$\V$.
+
+But we have just concluded that the gradient, $\nabla f$, is \emph{not} an
+element of~$\V$; it is, instead, an element of $\mathcal{L}(\V, \R)$, the space
+of linear maps from $\V$ to~$\R$.  Those are not the same thing.  What
+is going on?
+
+The space $\mathcal{L}(\V,\R)$ is itself a vector space.  This vector space is
+called the \emph{dual} of~$\V$ and often denoted~$\V^*$.
+A notable fact about $\V^*$ is that it has the same dimension as~$\V$.
+Thus, if one happens to represent an element of an $n$-dimensional
+space $\V$ by a tuple of $n$ numbers, then one might also represent an
+element of $\V^*$ by a tuple of $n$ numbers.\sidenote{People often visually distinguish the two
   kinds of tuple by writing an element of $\V$ vertically--a ``column
   vector''---and writing an element of $\V^*$ horizontally--a ``row
   vector.'' Other terminology calls an element of $\V$ a
   \emph{contravariant vector} and an element of $\V^*$ a
   \emph{covariant vector}.}
+If one squints, those
+look like the same thing.  Perhaps one can obtain a ``real'' vector in
+$\V$ from a dual vector in $\V^*$ by taking the components of the dual
+vector and simply pretending they are the components of a vector?
+
+Well, yes, you can, but the resulting vector will depend on the
+specific basis chosen.  There is no ``natural'' way to
+convert an element of $\V^*$ into an element of $\V$: some additional
+structure is required, such as a choice of basis (or an inner
+product).  Absent such additional structure, the conversion will
+inevitably involve an arbitrary choice, and one ought to feel
+uncomfortable that the result depends on that arbitrary choice.
  
 Summarising the above examples, we have the following:
 \begin{enumerate}
-\item The derivative of a function $f\colon\R\to\R$ is a number at each
-  point; that is, it too is a function $\R\to\R$.
+\item The derivative of a function $f\colon\R\to\R$ is, at each point, a
+  number; that is, an element of $\R$.
 \item The derivative of a function $f\colon \R\to\W$ is, at each point,
-  a vector in~$\W$; that is, it is a function $\R\to\mathcal{W}$.
-\item The derivative of a function $f\colon\V\to\R$ is 
+  a vector in~$\W$.
+\item The derivative of a function $f\colon\V\to\R$ is, at each point, a
+  dual vector in~$\V^*$; that is, a linear map $\V\to\R$.
 \end{enumerate}
+
 
 
 
