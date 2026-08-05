@@ -184,14 +184,11 @@ really rather large.
 
 It turns out, somewhat remarkably, that the dependence of the
 derivative at $\vv{x}$ on the direction $\vv{\xi}$ is not some terribly
-complicated thing: in fact, it is \emph{linear} in~$\vv{\xi}$.  That is,
-the derivative at $\vv{x}$ actually ``lives in'' the space
-$\mathcal{L}(\V,\set{R})$, the space of linear maps from $\V$
-to~$\set{R}$.\sidenote{To show that the directional derivative is
+complicated thing: in fact, it is \emph{linear}
+in~$\vv{\xi}$.\sidenote{To show that the directional derivative is
   linear in the direction, one must show that
   $\nabla_{\alpha\vv{\xi}+\beta\vv{\zeta}}f = \alpha\nabla_{\vv{\xi}} f+ \beta\nabla_{\vv{\zeta}} f$
-  for any two numbers $\alpha,\beta\in\set{R}$ and vectors
-  $\vv{\xi},\vv{\zeta} \in\V$.
+  for any two numbers $\alpha,\beta\in\set{R}$ and vectors $\vv{\xi},\vv{\zeta} \in\V$.
   %
   \sidepar
   To see this, let $s(\lambda)$ and $t(\lambda)$ be any two functions of
@@ -212,29 +209,38 @@ derivative along $\alpha\vv{\xi} + \beta\vv{\zeta}$; and, on the right,
 the required linear combination of the directional derivatives along
 $\vv{\xi}$ and~$\vv{\zeta}$. 
 }
-And this space is much (much) smaller than the full space~$\set{R}^{\V}$.
+That is, the derivative at $\vv{x}$ actually ``lives in'' the space
+$\mathcal{L}(\V,\set{R})$, the space of linear maps from $\V$
+to~$\set{R}$. And this space is much (much) smaller than the full
+space~$\set{R}^{\V}$.
 
 The space $\mathcal{L}(\V,\set{R})$ is known as the \emph{dual}
 of~$\V$, written $\V^*$.  It is itself a vector space and in fact has
-the same dimension as~$\V$.
+the same dimension as~$\V$.  In other words, there is some dual
+vector, $\vv{G}\in\V^*$, such that
+$\nabla_{\vv{\xi}}f = \vv{G}(\vv{\xi})$. (I am omitting the dependency on
+$\vv{x}$.) This $\vv{G}$ is called the \emph{gradient} of~$f$; it is
+normally writen as simply $\nabla f$.
 
-In other words, there is some element, 
-
-
-Thus, if one happens to represent an
-element of $\V$ as a tuple of numbers, then one can represent
-an element of $\V^*$ as a tuple of numbers of the very same length.
-They are not the same kind of thing—they are not elements of the
-same vector space—but it is easy to think that they are.  
-
-In other words, there is some dual
-vector, $\tilde{\zeta}$, called the \emph{gradient of $\mu$}, such that
-$\nabla_\xi\mu = \tilde{\zeta}(\xi)$ for any~$\xi$.  Instead of
-$\tilde{\zeta}$ we normally write just $\nabla\mu$.
-
-Thus the gradient of a real-valued map on $\mathcal{V}$ is a \emph{dual} vector
-at each point in~$\mathcal{V}$. 
-
+Note that the gradient of a function, $f$, is not an element of $\V$,
+it is an element of $\V^*$.  If one happens to represent an element of
+$\V$ as a tuple of numbers, then one might represent an element of
+$\V^*$ as a tuple of numbers of the very same length: but they are not
+the same thing.\sidenote{People often visually distinguish the two
+  kinds of tuple by writing an element of $\V$ vertically--a ``column
+  vector''---and writing an element of $\V^*$ horizontally--a ``row
+  vector.'' Other terminology calls an element of $\V$ a
+  \emph{contravariant vector} and an element of $\V^*$ a
+  \emph{covariant vector}.}
+ 
+Summarising the above examples, we have the following:
+\begin{enumerate}
+\item The derivative of a function $f\colon\R\to\R$ is a number at each
+  point; that is, it too is a function $\R\to\R$.
+\item The derivative of a function $f\colon \R\to\W$ is, at each point,
+  a vector in~$\W$; that is, it is a function $\R\to\mathcal{W}$.
+\item The derivative of a function $f\colon\V\to\R$ is 
+\end{enumerate}
 
 
 
