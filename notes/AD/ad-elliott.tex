@@ -74,21 +74,21 @@ element of a different vector space.}
   \end{equation*}
 \end{enumerate}
 } Suppose that $f(x)$ is a real-valued function on the reals. The
-usual derivative of $f$ at $x$ is:
-\begin{equation*}
-  \frac{df}{dx} = \lim_{\delta\to0}\frac{f(x + \delta)-f(x)}{\delta},
-\end{equation*}
-and I am sure you are aware of the derivatives of elementary functions
+ordinary derivative of $f$ at $x$ is:
+\begin{equation}\label{eq:deriv}
+  \frac{df}{dx} = \lim_{\delta\to0}\frac{f(x + \delta)-f(x)}{\delta}.
+\end{equation}
+I am sure you are aware of the derivatives of elementary functions
 as well as properties of the derivative such as the chain rule.  Here
 is one simple property. Suppose the Taylor expansion of $f$ in the
 vicinity of $x=x_0$ is
-\begin{equation}\label{eq:deriv}
+\begin{equation*}
   f(x) = a + b (x-x_0) + \frac{1}{2}c(x-x_0)^2 + \dotsb. 
-\end{equation}
+\end{equation*}
 Then the derivative of $f$ at $x_0$ is just~$b$, the coefficient of
 the linear term in the expansion.
 
-The idea of the gradient is to generalise the ordinary derivative.
+The idea of the gradient is to generalise this ordinary derivative.
 Instead of functions from $\R$ to $\R$, we are interested in functions
 from one vector space to another.  Can we generalise the derivative to this
 setting?
@@ -104,8 +104,9 @@ ordinary derivative.
 \subsection{Two special case}
 
 \emph{Example:} Suppose we simply things slightly by choosing
-$\V=\set{R}$. Just for this example, I will write the map, $\vv{f}$, in
-boldface. Thus, $\vv{f}\colon t\mapsto\vv{f}(t)$ describes a path in
+$\V=\set{R}$. Just for this example, I will write the map, $\vv{f}$,
+in boldface, so that $\vv{f}\colon\R\to\W$ is a map from $\R$
+to~$\W$. Thus, $\vv{f}$ describes a path in
 $\W$ parameterised by a number, $t\in \R$.  One might think of
 $\vv{f}(t)$ as ``a position in $\W$ at time~$t$.''  The derivative of
 this map is given by the same formula as in eq.~\eqref{eq:deriv}; that
@@ -118,22 +119,21 @@ right-hand side is well-defined. That is to say, it is permissible to
 write $\vv{f}(t + \delta)-\vv{f}(x)$ because the notion of the
 subtraction of one vector from another is part of the required
 machinery of a vector space.  Likewise, the division by $\delta$ is also an
-operation available in~$\W$. 
+operation available in~$\W$. The result of the right-hand side is a
+vector in~$\W$ and so the derivative is a vector in~$\W$. 
 
 Sometimes one writes $\dot{\vv{f}}$ (with a little dot) for the
 derivative of~$\vv{f}$.\sidenote{The dot notation is normally used
   when the parameter is thought of as ``time.'' An alternative
-  notation for the derivative is~$\vv{f}'$.} It follows directly from
-the definition that $\dot{\vv{f}}(t)$ is \emph{also} a vector (in
-$\W$) for each value of~$t$. Since $\dot{\vv{f}}$ ``lives in'' $\W$, we
-can also imagine that, to each point on the path traced out by
-$\vv{f}$ in $\W$, we assign the vector~$\dot{\vv{f}}(t)$ (see
-figure~\ref{fig:velocity}).  If $\vv{f}(t)$ is a ``position at time
-$t$'', then $\dot{\vv{f}}(t)$ might be thought of as ``the velocity at
-time~$t$.'' 
+  notation for the derivative is~$\vv{f}'$.} Since $\dot{\vv{f}}$
+``lives in'' $\W$, we can also imagine that, to each point on the path
+traced out by $\vv{f}$ in $\W$, we assign the vector~$\dot{\vv{f}}(t)$
+(see figure~\ref{fig:velocity}).  If $\vv{f}(t)$ is a ``position at
+time $t$'', then $\dot{\vv{f}}(t)$ might be thought of as ``the
+velocity at time~$t$.''
 
-\emph{Example:} Suppose instead that $\V$ is an aribtrary vector space
-but $\W = \set{R}$.  Now $f$ is a real-valued function on~$\V$; that
+\emph{Example:} Suppose instead that $\V$ is an arbitrary vector space
+but now $\W = \set{R}$.  Now $f$ is a real-valued function on~$\V$; that
 is to say, $f(\vv{x})$ is a real number for each $\vv{x}\in\V$.  (In a
 sense, this is the opposite of the previous example.)  On the face of
 it, one might imagine that we can directly adapt eq.~\eqref{eq:deriv}
@@ -171,23 +171,23 @@ expression:
 $\delta$, is simply a number; and the limit is taken as $\delta$ approaches
 zero.  We call this limit the ``directional derivative of $\vv{f}$
 along $\vv{\xi}$'' and denote it by
-$\partial_{\vv{\xi}}f$.\sidenote{Other notations for the directional
+$\nabla_{\vv{\xi}}f$.\sidenote{Other notations for the directional
   derivative are $D_{\vv{\xi}}f$, $\pounds_{\vv{\xi}}f$, and
-  $\nabla_{\vv{\xi}}f$.} An equivalent way to formulate the directional
+  $\partial_{\vv{\xi}}f$.} An equivalent way to formulate the directional
 derivative is
 \begin{equation}
   \label{eq:grad}
-  \partial_{\vv{\xi}}f = \left.\frac{d}{d\lambda} f(\vv{x}+\lambda\vv{\xi})\right|_{\lambda=0}.
+  \nabla_{\vv{\xi}}f \isdef \left.\frac{d}{d\lambda} f(\vv{x}+\lambda\vv{\xi})\right|_{\lambda=0}.
 \end{equation}
 
-The directional derivative, $\partial_{\vv{\xi}}f$, of $f$ at
+The directional derivative, $\nabla_{\vv{\xi}}f$, of $f$ at
 $\vv{x}$, is a number.  You might expect that this number would depend
 in some complicated way on the direction,~$\vv{\xi}$. Remarkably,
 however, the derivative is \emph{linear} in~$\vv{\xi}$.\sidenote{To show
   that the directional derivative is linear in the direction, one must
   show that
-  $\partial_{\alpha\vv{\xi}+\beta\vv{\zeta}}f = \alpha\partial_{\vv{\xi}} f+
-  \beta\partial_{\vv{\zeta}} f$ for any two numbers
+  $\nabla_{\alpha\vv{\xi}+\beta\vv{\zeta}}f = \alpha\nabla_{\vv{\xi}} f+
+  \beta\nabla_{\vv{\zeta}} f$ for any two numbers
   $\alpha,\beta\in\set{R}$ and vectors $\vv{\xi},\vv{\zeta} \in\V$.
   %
   \sidepar
@@ -211,16 +211,16 @@ and~$\vv{\zeta}$.
 }
 That is, there is some linear map,
 $\vv{G}\colon\V\to\R$, such that, for \emph{any} vector $\vv{\xi}$, we have
-$\partial_{\vv{\xi}}f = \vv{G}(\vv{\xi})$. This $\vv{G}$ is called the ``gradient of
+$\nabla_{\vv{\xi}}f = \vv{G}(\vv{\xi})$. This $\vv{G}$ is called the ``gradient of
 $f$ at $\vv{x}$.''  For each point, $\vv{x}\in\V$, there is a
 corresponding linear map, $\vv{G}(\vv{x})$, and this function \emph{is} the
 gradient of $f$, written~$\nabla f$.
 
 To say this another way: given a function $f(\vv{x})$ there is, at
-each point $\vv{x}\in\V$, a linear map, $\nabla f$, such that for any vector
+each point $\vv{x}\in\V$, a linear map, $\nabla f\colon\V\to\R$, such that for any vector
 $\vv{\xi}$,
 \begin{equation*}
-  \partial_{\vv{\xi}} f = (\nabla f)(\xi).
+  \nabla_{\vv{\xi}} f = (\nabla f)(\xi).
 \end{equation*}
 
 It is worth stepping back briefly and considering the common story
@@ -228,12 +228,10 @@ about the method of gradient descent.  To find the minimum of a
 function by the method of gradient descent, one computes the gradient
 of the function, which is supposed to ``point uphill,'' and takes a
 ``small step'' in the opposite direction.  That is, the gradient is
-thought of as a vector in~$\V$.
-
-But we have just concluded that the gradient, $\nabla f$, is \emph{not} an
-element of~$\V$; it is, instead, an element of $\mathcal{L}(\V, \R)$, the space
-of linear maps from $\V$ to~$\R$.  Those are not the same thing.  What
-is going on?
+thought of as a vector in~$\V$.  But we have just concluded that the
+gradient, $\nabla f$, is \emph{not} an element of~$\V$; it is, instead, an
+element of $\mathcal{L}(\V, \R)$, the space of linear maps from $\V$
+to~$\R$.  Those are not the same thing.  What is going on?
 
 The space $\mathcal{L}(\V,\R)$ is itself a vector space.  This vector space is
 called the \emph{dual} of~$\V$ and often denoted~$\V^*$.
@@ -268,6 +266,48 @@ Summarising the above examples, we have the following:
 \item The derivative of a function $f\colon\V\to\R$ is, at each point, a
   dual vector in~$\V^*$; that is, a linear map $\V\to\R$.
 \end{enumerate}
+
+\subsection{The general case}
+
+We return now to the general case of arbitrary, finite-dimensional
+vector spaces $\V$ and~$\W$, and a (vector-valued) function $\vv{f}\colon\V\to\W$.  The
+remarks above give us the notion of a $\W$-valued directional
+derivative of~$\vv{f}$, where the direction is taken in~$\V$.  Then a
+similar argument to one above shows that the directional derivative is
+linear in the direction and hence arises from a linear map. In other
+words, for a function,
+\begin{equation*}
+  \vv{f}\colon\V\to\W,
+\end{equation*}
+we obtain a gradient,
+\begin{equation*}
+  \nabla \vv{f}\colon \V\to\mathcal{L}(\V,\W),
+\end{equation*}
+by
+\begin{equation}\label{eq:gradient}
+  \nabla \vv{f} \colon \vv{x} \mapsto \vv{\xi} \mapsto \left.\frac{d}{d\lambda}\vv{f}(\vv{x}+\lambda \vv{\xi})\right|_{\lambda=0}  .
+\end{equation}
+
+From now on, I will not use boldface to distinguish vectors from real
+numbers.
+
+\emph{Example:} Suppose $f$ is a constant function, say $f(x)=c$,
+where $c\in\W$, for any~$x\in\V$.  Then $\nabla f$ is, at each point $x\in\V$,
+the zero map, $\nabla f\colon v\mapsto 0$.
+
+\emph{Example} Suppose $f$ is itself a linear map, that is
+$f\in\mathcal{L}(\V,\W)$.  Consider the derivative on the right-hand side of
+eq.~\eqref{eq:gradient} at some point $x\in\V$ and given a direction
+$\xi\in\V$.  Since $f$ is linear, we have
+\begin{equation*}
+  \begin{aligned}
+  \left.\frac{d}{d\lambda}\vv{f}(\vv{x}+\lambda \vv{\xi})\right|_{\lambda=0} =  
+  \end{aligned}
+\end{equation*}
+
+
+
+\subsection{Composition}
 
 
 
