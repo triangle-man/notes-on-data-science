@@ -2,6 +2,7 @@
 \documentclass{article}
 \usepackage{ttn}
 \usepackage{booktabs}
+\usepackage{amsmath}
 \usepackage{siunitx}
 % \usepackage{mathtools}
 \usepackage{colonequals} % because unicode-math has broken "::=" somehow
@@ -109,28 +110,28 @@ in boldface, so that $\vv{f}\colon\R\to\W$ is a map from $\R$
 to~$\W$. Thus, $\vv{f}$ describes a path in
 $\W$ parameterised by a number, $t\in \R$.  One might think of
 $\vv{f}(t)$ as ``a position in $\W$ at time~$t$.''  The derivative of
-this map is given by the same formula as in eq.~\eqref{eq:deriv}; that
+this map is defined by the same formula as in eq.~\eqref{eq:deriv}; that
 is:
 \begin{equation*}
   \frac{d\vv{f}}{dt} = \lim_{\delta\to0}\frac{\vv{f}(t + \delta)-\vv{f}(t)}{\delta}.
 \end{equation*}
 Notice that because $\mathcal{W}$ is a vector space, the expression on the
 right-hand side is well-defined. That is to say, it is permissible to
-write $\vv{f}(t + \delta)-\vv{f}(x)$ because the notion of the
-subtraction of one vector from another is part of the required
-machinery of a vector space.  Likewise, the division by $\delta$ is also an
-operation available in~$\W$. The result of the right-hand side is a
-vector in~$\W$ and so the derivative is a vector in~$\W$. 
+write $\vv{f}(t + \delta)-\vv{f}(x)$ because the notion of the subtraction
+of one vector from another is part of the required machinery of a
+vector space.  Likewise, the division by $\delta$, a real number, is also
+an operation available in~$\W$. The result of the right-hand side is a
+vector in~$\W$ and so the derivative is, for each $t\in\R$, a vector
+in~$\W$.
 
-Sometimes one writes $\dot{\vv{f}}$ (with a little dot) for the
-derivative of~$\vv{f}$.\sidenote{The dot notation is normally used
-  when the parameter is thought of as ``time.'' An alternative
-  notation for the derivative is~$\vv{f}'$.} Since $\dot{\vv{f}}$
-``lives in'' $\W$, we can also imagine that, to each point on the path
-traced out by $\vv{f}$ in $\W$, we assign the vector~$\dot{\vv{f}}(t)$
-(see figure~\ref{fig:velocity}).  If $\vv{f}(t)$ is a ``position at
-time $t$'', then $\dot{\vv{f}}(t)$ might be thought of as ``the
-velocity at time~$t$.''
+Sometimes one writes $\vv{f}'$ (``$f$ prime'') for the derivative
+of~$\vv{f}$.\sidenote{An alternative notation, especially when the
+  parameter is thought of as ``time,'' is $\dot{\vv{f}}$ (``$f$
+  dot'').} Since $\vv{f}'$ ``lives in'' $\W$, we can also imagine
+that, to each point on the path $\vv{f}(t)$ traced out in $\W$, we assign
+the vector~$\vv{f}'(t)$ (see figure~\ref{fig:velocity}).  If
+$\vv{f}(t)$ is a ``position at time $t$'', then $\vv{f}'(t)$ might be
+thought of as ``the velocity at time~$t$.''
 
 \emph{Example:} Suppose instead that $\V$ is an arbitrary vector space
 but now $\W = \set{R}$.  Now $f$ is a real-valued function on~$\V$; that
@@ -169,7 +170,7 @@ expression:
 \end{equation*}
 \emph{This} expression is well-defined: on the right, the denominator,
 $\delta$, is simply a number; and the limit is taken as $\delta$ approaches
-zero.  We call this limit the ``directional derivative of $\vv{f}$
+zero.  We call this limit the ``directional derivative of $f$
 along $\vv{\xi}$'' and denote it by
 $\nabla_{\vv{\xi}}f$.\sidenote{Other notations for the directional
   derivative are $D_{\vv{\xi}}f$, $\pounds_{\vv{\xi}}f$, and
@@ -180,15 +181,14 @@ derivative is
   \nabla_{\vv{\xi}}f \isdef \left.\frac{d}{d\lambda} f(\vv{x}+\lambda\vv{\xi})\right|_{\lambda=0}.
 \end{equation}
 
-The directional derivative, $\nabla_{\vv{\xi}}f$, of $f$ at
-$\vv{x}$, is a number.  You might expect that this number would depend
-in some complicated way on the direction,~$\vv{\xi}$. Remarkably,
-however, the derivative is \emph{linear} in~$\vv{\xi}$.\sidenote{To show
-  that the directional derivative is linear in the direction, one must
-  show that
-  $\nabla_{\alpha\vv{\xi}+\beta\vv{\zeta}}f = \alpha\nabla_{\vv{\xi}} f+
-  \beta\nabla_{\vv{\zeta}} f$ for any two numbers
-  $\alpha,\beta\in\set{R}$ and vectors $\vv{\xi},\vv{\zeta} \in\V$.
+The directional derivative, $\nabla_{\vv{\xi}}f$, of $f$, at $\vv{x}$,
+is a number.  This number depends on the direction,~$\vv{\xi}$.  You
+might expect that the number would depend in some complicated way on
+the direction.  Remarkably, however, the derivative is \emph{linear}
+in~$\vv{\xi}$.\sidenote{To show that the directional derivative is
+  linear in the direction, one must show that
+  $\nabla_{\alpha\vv{\xi}+\beta\vv{\zeta}}f = \alpha\nabla_{\vv{\xi}} f+ \beta\nabla_{\vv{\zeta}} f$
+  for any two numbers $\alpha,\beta\in\set{R}$ and vectors $\vv{\xi},\vv{\zeta} \in\V$.
   %
   \sidepar
   To see this, let $s(\lambda)$ and $t(\lambda)$ be any two functions of
@@ -205,33 +205,39 @@ Now choose the special case of $s(\lambda)=\alpha\lambda$ and $t(\lambda)=\beta\
   \frac{\partial f}{\partial t} \beta.
 \end{equation*}
 Evaluating this at $\lambda=0$ one has, on the left, the directional
-derivative along $\alpha\vv{\xi} + \beta\vv{\zeta}$; and, on the right, the required
-linear combination of the directional derivatives along $\vv{\xi}$
-and~$\vv{\zeta}$.
-}
-That is, there is some linear map,
-$\vv{G}\colon\V\to\R$, such that, for \emph{any} vector $\vv{\xi}$, we have
-$\nabla_{\vv{\xi}}f = \vv{G}(\vv{\xi})$. This $\vv{G}$ is called the ``gradient of
-$f$ at $\vv{x}$.''  For each point, $\vv{x}\in\V$, there is a
-corresponding linear map, $\vv{G}(\vv{x})$, and this function \emph{is} the
-gradient of $f$, written~$\nabla f$.
+derivative along $\alpha\vv{\xi} + \beta\vv{\zeta}$; and, on the
+right, the required linear combination of the directional derivatives
+along $\vv{\xi}$ and~$\vv{\zeta}$.  } That is, there is, at each point
+in $\V$, some linear map, $\vv{G}\colon\V\to\R$, such that, for
+\emph{any} vector $\vv{\xi}$, we have
+$\nabla_{\vv{\xi}}f = \vv{G}(\vv{\xi})$.  This $\vv{G}$ is called the
+\emph{gradient} of $f$, written~$\nabla f$. 
 
-To say this another way: given a function $f(\vv{x})$ there is, at
-each point $\vv{x}\in\V$, a linear map, $\nabla f\colon\V\to\R$, such that for any vector
+Note that in some sense the gradient has two arguments: it depends on
+$\vv{x}$, the point in~$\V$, and, for each $\vv{x}\in\V$, the gradient
+at that point is a linear map, which ``consumes'' a value
+$\vv{\xi}\in\V$ to produce a value in~$\R$.  (The dependence on
+$\vv{x}$ is often omitted and the dependence on $\vv{\xi}$ is sometimes
+shown as a ``dot product.'')
+
+In summary: given a function $f(\vv{x})$ there is, at each point
+$\vv{x}\in\V$, a linear map, $\nabla f\colon\V\to\R$, such that for any vector
 $\vv{\xi}$,
 \begin{equation*}
-  \nabla_{\vv{\xi}} f = (\nabla f)(\xi).
+  \nabla_{\vv{\xi}} f = (\nabla f)(\vv{\xi}),
 \end{equation*}
+where on the right hand side, we mean to show the action of $\nabla f$ as a
+linear map and we have suppresed the dependence on~$\vv{x}$. .
 
-It is worth stepping back briefly and considering the common story
+It is worth stepping back briefly and recalling the common story
 about the method of gradient descent.  To find the minimum of a
 function by the method of gradient descent, one computes the gradient
-of the function, which is supposed to ``point uphill,'' and takes a
-``small step'' in the opposite direction.  That is, the gradient is
-thought of as a vector in~$\V$.  But we have just concluded that the
-gradient, $\nabla f$, is \emph{not} an element of~$\V$; it is, instead, an
-element of $\mathcal{L}(\V, \R)$, the space of linear maps from $\V$
-to~$\R$.  Those are not the same thing.  What is going on?
+of the function, which is supposed to ``point uphill.''  That is, the
+gradient is thought of as a vector in~$\V$.  But we have just
+concluded that the gradient, $\nabla f$, is \emph{not} an element
+of~$\V$; it is, instead, an element of $\mathcal{L}(\V, \R)$, the space of
+linear maps from $\V$ to~$\R$.  Those are not the same thing.  What is
+going on?
 
 The space $\mathcal{L}(\V,\R)$ is itself a vector space.  This vector space is
 called the \emph{dual} of~$\V$ and often denoted~$\V^*$.
@@ -244,10 +250,11 @@ element of $\V^*$ by a tuple of $n$ numbers.\sidenote{People often visually dist
   vector.'' Other terminology calls an element of $\V$ a
   \emph{contravariant vector} and an element of $\V^*$ a
   \emph{covariant vector}.}
-If one squints, those
-look like the same thing.  Perhaps one can obtain a ``real'' vector in
-$\V$ from a dual vector in $\V^*$ by taking the components of the dual
-vector and simply pretending they are the components of a vector?
+
+If one squints, those look like the same thing.  Perhaps one can
+obtain a ``real'' vector in $\V$ from a dual vector in $\V^*$ by
+taking the components of the dual vector and simply pretending they
+are the components of a vector?
 
 Well, yes, you can, but the resulting vector will depend on the
 specific basis chosen.  There is no ``natural'' way to
@@ -288,22 +295,110 @@ by
   \nabla \vv{f} \colon \vv{x} \mapsto \vv{\xi} \mapsto \left.\frac{d}{d\lambda}\vv{f}(\vv{x}+\lambda \vv{\xi})\right|_{\lambda=0}  .
 \end{equation}
 
-From now on, I will not use boldface to distinguish vectors from real
-numbers.
+\emph{Example:} Suppose $\vv{f}$ is a constant function, say $\vv{f}(\vv{x})=\vv{c}$,
+where $\vv{c}\in\W$, for any~$\vv{x}\in\V$.  Then $\nabla \vv{f}$ is, at each point $\vv{x}\in\V$,
+the zero map, $\nabla \vv{f}\colon \vv{v} \mapsto \vv{0}$.
 
-\emph{Example:} Suppose $f$ is a constant function, say $f(x)=c$,
-where $c\in\W$, for any~$x\in\V$.  Then $\nabla f$ is, at each point $x\in\V$,
-the zero map, $\nabla f\colon v\mapsto 0$.
-
-\emph{Example} Suppose $f$ is itself a linear map, that is
-$f\in\mathcal{L}(\V,\W)$.  Consider the derivative on the right-hand side of
-eq.~\eqref{eq:gradient} at some point $x\in\V$ and given a direction
-$\xi\in\V$.  Since $f$ is linear, we have
+\emph{Example:} Suppose $\vv{f}$ is itself a linear map, that is
+$\vv{f}\in\mathcal{L}(\V,\W)$.  Consider the derivative on the right-hand side of
+eq.~\eqref{eq:gradient} at some point $\vv{x}\in\V$ and given a direction
+$\vv{\xi}\in\V$.  Since $\vv{f}$ is linear, we have
 \begin{equation*}
   \begin{aligned}
-  \left.\frac{d}{d\lambda}\vv{f}(\vv{x}+\lambda \vv{\xi})\right|_{\lambda=0} =  
+  \left.\frac{d}{d\lambda}\vv{f}(\vv{x}+\lambda\vv{\xi})\right|_{\lambda=0}
+    &=   \left.\frac{d}{d\lambda} \Bigl[\vv{f}(\vv{x}) +\lambda f(\vv{\xi})\Bigr] \right|_{\lambda=0} \\
+    &= \vv{f}(\vv{\xi}).
   \end{aligned}
 \end{equation*}
+Since there is no dependence on $\vv{x}$, the gradient of a linear
+function is constant; and that constant is the constant linear map
+$\vv{f}$ itself.
+
+\emph{Example:} Suppose that $\vv{v}_{(1)}, \dotsc, \vv{v}_{(n)}$ is a basis
+for~$\V$, and $\vv{w}_{(1)}, \dotsc, \vv{w}_{(m)}$ is a basis for~$\W$. (I mean
+that, $\vv{v}_{(1)}$, for example is the first basis vector in $\V$,
+\emph{not} that it is the first component of some vector.)
+
+Let $f^j$ (for $j=1,\dotsc,m$) be the components of $\vv{f}$ in the
+basis of~$\W$, so that
+$\vv{f} = \sum_j f^j \vv{w}_{(j)}$.\sidenote{You will have noted a
+  convention in the placement of the indices. The basis vectors are
+  enumerated by a ``down'' index in parentheses, such
+  as~$\vv{w}_{(i)}$, whereas the components are indicated by an ``up''
+  index, such as~$f^i$.  Contrariwise, I will denote a particular dual
+  basis vector with an up index in parentheses, and the components of
+  a dual vector by a down index.  The net result will be that
+  summations will only ever occur over an index where one occurence is
+  up and one is down.} What are the components of $\nabla f$ expressed in
+these bases?
+
+What does it actually mean to ``express $\nabla f$ in these bases''?
+$\nabla f$~lives in $\mathcal{L}(\V,\W)$ and so we will need a basis
+for~$\mathcal{L}(\V,\W)$.  What does a general element of
+$\mathcal{L}(\V,\W)$ look like?  Pick some $\tilde{\vv{v}}\in\V^*$, the dual
+of~$\V$, and some $\vv{w}\in\W$, and consider the operation, on an
+element $\vv{x}\in\V$, that is ``act on $\vv{x}$ with $\tilde{\vv{v}}$
+to produce a number, then multiply $\vv{w}$ by this number.''  This
+operation is a linear map from $\V$ to~$\W$.  We write it as
+$\tilde{\vv{v}}\otimes \vv{w}$, and the description of this map above is
+equivalent to
+\begin{equation*}
+  (\tilde{\vv{v}}\otimes \vv{w})(\vv{x}) \isdef (\tilde{\vv{v}}(\vv{x})) \vv{w}.
+\end{equation*}
+
+Now suppose that $\tilde{\vv{v}}^{(1)}, \dotsc, \tilde{\vv{v}}^{(n)}$
+is a basis for~$\V^*$ (the next paragraph will describe how to obtain
+this basis).  We claim (without proof) that a basis for
+$\mathcal{L}(\V,\W)$ is then given by the $n\times m$ objects
+$\tilde{\vv{v}}^{(1)}\otimes \vv{w}_{(1)}, \tilde{\vv{v}}^{(2)}\otimes
+\vv{w}_{(1)},\dotsc,\tilde{\vv{v}}^{(1)}\otimes \vv{w}_{(2)},\dotsc,
+\tilde{\vv{v}}^{(n)}\otimes \vv{w}_{(m)}$.
+
+The natural basis to choose for $\V^*$ is the \emph{dual basis} (dual
+to the basis $\vv{v}_{(i)}$ of~$\V$) defined by the relations:
+\begin{equation*}
+  \tilde{\vv{v}}^{(i)} (\vv{v}_{(j)}) = \begin{cases}
+    1\quad\text{if $i=j$,} \\
+    0\quad\text{otherwise.}
+  \end{cases}
+\end{equation*}
+In this basis, the components of any $\tilde{\vv{x}}\in\V^*$ are
+straightforward to compute: they are $\tilde{x}_j =
+\tilde{\vv{x}}(\vv{v}_{(j)})$. 
+
+So then, since the $\vv{w}_{(j)}$ are constant, we have\sidenote{I am
+  relying on the following lemma which I have not shown: for $f$ a
+  real-valued function and $\vv{w}\in\W$ constant, we have
+  $\nabla (f\vv{w}) = (\nabla f) \otimes \vv{w}$.}
+\begin{equation*}
+  \begin{aligned}
+    \nabla f
+    &= \nabla \bigl(\sum_j f^j \vv{w}_{(j)}\bigr) \\
+    &= \sum_j (\nabla f^j) \otimes \vv{w}_{(j)}).
+  \end{aligned}
+\end{equation*}
+Now, since $f^j$ is a real-valued function, $\nabla f^j$ is an element
+of~$\V^*$, which we may write as  
+\begin{equation*}
+  \nabla f^j = \sum_i f^j{}_i \tilde{\vv{v}}^{(i)}.
+\end{equation*}
+That is to say, for fixed $j$, the value $f^j{}_i$ is the $i$th
+component of $\nabla f^j$ in the dual basis. To isolate a single component,
+we apply $\vv{v}_{(k)}$ to both sides.  On the right-hand side, we obtain
+just $f^j{}_k$. Thus,
+\begin{equation*}
+  \begin{aligned}
+    f^j{}_k &= (\nabla f^j)(\vv{v}_{(k)}) \\
+    &= \nabla_{\vv{v}_{(k)}} f^j \\
+    &= \frac{d}{d\lambda} f^j(x^1, \dotsc, x^k + \lambda, \dotsc, x^n)\Bigr|_{\lambda=0} \\
+    &= \frac{\partial f^j}{\partial x^k}.
+  \end{aligned}
+\end{equation*}
+(The second step follows from the definition of $\nabla$ in terms of the
+directional derivative and the third step follows from the definition
+of the directional derivative.)
+
+The numbers $f^j{}_k$ are called the \emph{Jacobian} of~$f$. 
 
 
 
