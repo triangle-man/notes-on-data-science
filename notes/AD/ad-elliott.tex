@@ -224,10 +224,10 @@ In summary: given a function $f(\vv{x})$ there is, at each point
 $\vv{x}\in\V$, a linear map, $\nabla f\colon\V\to\R$, such that for any vector
 $\vv{\xi}$,
 \begin{equation*}
-  \nabla_{\vv{\xi}} f = (\nabla f)(\vv{\xi}),
+  \nabla_{\vv{\xi}} f = (\nabla f)\cdot\vv{\xi},
 \end{equation*}
 where on the right hand side, we mean to show the action of $\nabla f$ as a
-linear map and we have suppresed the dependence on~$\vv{x}$. .
+linear map and we have suppresed the dependence on~$\vv{x}$.
 
 It is worth stepping back briefly and recalling the common story
 about the method of gradient descent.  To find the minimum of a
@@ -314,10 +314,82 @@ Since there is no dependence on $\vv{x}$, the gradient of a linear
 function is constant; and that constant is the constant linear map
 $\vv{f}$ itself.
 
-\emph{Example:} Suppose that $\vv{v}_{(1)}, \dotsc, \vv{v}_{(n)}$ is a basis
-for~$\V$, and $\vv{w}_{(1)}, \dotsc, \vv{w}_{(m)}$ is a basis for~$\W$. (I mean
-that, $\vv{v}_{(1)}$, for example is the first basis vector in $\V$,
-\emph{not} that it is the first component of some vector.)
+The ordinary derivative of a function of one variable is the
+coefficient of the linear term in the Taylor series expansion of the
+function and the same idea carries across to the general case.  Consider
+the value of some function $\vv{f}\colon \V\to\W$ in the vicinity of a point
+$\vv{x}_0\in\V$:
+\begin{equation*}
+  \vv{f}(\vv{x}) = \vv{f}(\vv{x}_0 + (\vv{x} - \vv{x}_0)). 
+\end{equation*}
+Now fix a direction $\vv{x}$, write $\vv{x} = \vv{x_0} + \lambda\vv{\xi}$,
+and consider $\vv{f}$ as a function of $\lambda$:
+\begin{equation*}
+  \vv{f}(\vv{x}) = \vv{f}(\vv{x}_0 + \lambda \vv{\xi}),
+\end{equation*}
+which we can can Taylor expand about $\lambda=0$ as:
+\begin{equation*}
+  \begin{aligned}
+    \vv{f}(\vv{x})
+    &= \vv{f}(\vv{x}_0) + \lambda \frac{d}{d\lambda}(\vv{f}(\vv{x}_0 + \lambda
+      \vv{\xi})\big|_{\lambda=0} + O(\lambda^2) \\
+    &= \vv{f}(\vv{x}_0) + \lambda(\nabla_{\vv{\xi}} \vv{f}) + O(\lambda^2) \\
+    &= \vv{f}(\vv{x}_0) + \lambda(\nabla \vv{f})\cdot\vv{\xi} + O(\lambda^2) \\
+    &= \vv{f}(\vv{x}_0) + (\nabla \vv{f})\cdot(\vv{x}-\vv{x}_0) + O(\lambda^2).
+  \end{aligned}
+\end{equation*}
+The second line follows from the definition of the directional derivative and the
+third line from the definition of the gradient.
+
+That is: the gradient, $\nabla\vv{f}$, is the coefficient of the linear
+term in the linear approximation to~$\vv{f}$.  In the ordinary,
+one-dimensional case, one multiplies by this coefficient; here we are
+acting with a linear map (represented by the dot).
+
+Suppose $\mathcal{U}$, $\V$, and $\W$ are vector spaces, and there are two
+functions, $\vv{g}\colon \mathcal{U}\to\V$ and $\vv{f}\colon \V\to\W$.  The
+composition $\vv{f} \circ \vv{g}$ is a function from $\mathcal{U}$
+to~$\W$.  What can we say about $\nabla (\vv{f} \circ \vv{g})$?
+
+Fix $\vv{\xi}\in\mathcal{U}$ and consider the directional derivative of
+$f\circ g$ at $\vv{u}\in\mathcal{U}$.
+\begin{equation*}
+  \nabla_{\vv{\xi}} (\vv{f} \circ \vv{g})
+  = \frac{d}{d\lambda}
+  \vv{f}\bigl(\vv{g}(\vv{u}+\lambda\vv{\xi})\bigr)\Bigr|_{\lambda=0}. 
+\end{equation*}
+Now Taylor expand $\vv{g}$ as $\vv{g}(\vv{u}+\lambda\vv{\xi}) = \vv{g}(\vv{u})
++ \lambda (\nabla_{\vv{\xi}} \vv{g})(\vv{u}) + O(\lambda^2)$ to obtain
+\begin{equation*}
+  \begin{aligned}
+    \nabla_{\vv{\xi}} (\vv{f} \circ \vv{g})
+    &= \frac{d}{d\lambda}
+      \vv{f}\bigl( \vv{g}(\vv{u}) + \lambda (\nabla_{\vv{\xi}} \vv{g})(\vv{u})
+      + O(\lambda^2)\bigr)\Bigr|_{\lambda=0} \\
+    &= \vv{f}(\vv{g}(\vv{u})) + (\nabla\vv{f})\cdot(\nabla_{\vv{\xi}}
+      \vv{g})(\vv{u}) \\
+    &= \vv{f}(\vv{g}(\vv{u})) + (\nabla\vv{f})\cdot\bigl[(\nabla\vv{g})(\vv{u})\cdot\vv{\xi}\bigr]. 
+  \end{aligned}
+\end{equation*}
+The second line follows from the definition of the gradient applied
+to~$\vv{f}$, and the third line from the definition of the directional
+derivative applied to~$\vv{g}$.
+
+The term
+$(\nabla\vv{f})\cdot\bigl[(\nabla\vv{g})(\vv{u})\cdot\vv{\xi}\bigr]$ can be interpreted
+like this: Start with the direction $\vv{\xi}\in\mathcal{U}$ and apply the linear
+map $\nabla\vv{g}$ (evaluated at $\vv{u}$) to obtain a vector in~$\V$. Then
+apply to this vector the linear map $\nabla\vv{f}$ (evaluated at
+$\vv{g}(\vv{u})$) to obtain a vector in~$\W$.  Since both these
+operations are linear, the result is the same as applying, to the
+vector $\vv{\xi}$ the composition of the linear maps
+$\nabla\vv{f}(\vv{g}(\vv{u}))$ and~$\nabla\vv{g}(\vv{u})$.
+
+\emph{Example:} Suppose that $\vv{v}_{(1)}, \dotsc, \vv{v}_{(n)}$ is a
+basis for~$\V$, and $\vv{w}_{(1)}, \dotsc, \vv{w}_{(m)}$ is a basis
+for~$\W$. (I mean that $\vv{v}_{(1)}$, for example, is the first basis
+vector in $\V$, \emph{not} that it is the first component of some
+vector.)
 
 Let $f^j$ (for $j=1,\dotsc,m$) be the components of $\vv{f}$ in the
 basis of~$\W$, so that
@@ -402,7 +474,6 @@ The numbers $f^j{}_k$ are called the \emph{Jacobian} of~$f$.
 
 
 
-\subsection{Composition}
 
 
 
